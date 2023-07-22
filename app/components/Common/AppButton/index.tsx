@@ -63,14 +63,15 @@ const AppButton = (props: AppButtonProps | never) => {
         )}
 
         {!loading && (
-          <>
+          <Block row center>
             {title && (
-              <Text buttonTitleLight style={[styles.text, {color: titleColor}]}>
+              <Text buttonTitleLight style={[styles.text, {color: titleColor, marginRight: icon && 8}]}>
                 {title}
               </Text>
             )}
             {type === 'icon' && <AppIcon name={icon as keyof typeof ICONS} color={iconColor ?? theme.colors.defaultTextColor} />}
-          </>
+            {icon && <AppIcon name={icon as keyof typeof ICONS} color={iconColor ?? theme.colors.defaultTextColor} />}
+          </Block>
         )}
       </React.Fragment>
     </Element>

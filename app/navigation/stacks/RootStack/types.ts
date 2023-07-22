@@ -8,6 +8,7 @@ export type RootStackNavigationProps = {
   [Routes.SPLASH_SCREEN]: undefined;
   [Routes.MAIN_TABS_ROOT]: undefined;
   [Routes.AUTHENTICATION_ROOT]: undefined;
+  [Routes.WELCOME_SCREEN]: undefined;
   [Routes.ALERT]: DialogProps;
 };
 

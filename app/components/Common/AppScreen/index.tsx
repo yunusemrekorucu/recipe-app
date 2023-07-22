@@ -1,5 +1,5 @@
 import React, {memo, ReactNode} from 'react';
-import {Keyboard, Pressable, ScrollView, View, ViewStyle} from 'react-native';
+import {ImageBackground, Keyboard, Pressable, ScrollView, View, ViewStyle} from 'react-native';
 
 import {useNavigation} from '@react-navigation/native';
 import {StackNavigationOptions} from '@react-navigation/stack';
@@ -9,7 +9,7 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import layout from '../../../config/layout.json';
 import {getStyleShortcuts} from '../../../utils/style-shortcuts';
 
-import {Block, Text} from '@/components';
+import {AppImageBackground, Block, Text} from '@/components';
 import {useTheme} from '@/hooks';
 import {Header} from '@/navigation';
 import {bottomTabHeight, window} from '@/theme';
@@ -26,10 +26,11 @@ type Props<T> = {
   loading?: boolean;
   title?: string;
   navigation?: T;
+  backgroundImage?: string;
 };
 
 function AppScreen<T>(props: Props<T>) {
-  const {children, title, scroll, safe, keyboardScroll, customStyle, navigationOptions, flatList, loading} = props;
+  const {children, title, scroll, safe, keyboardScroll, customStyle, navigationOptions, flatList, loading, backgroundImage} = props;
   const navigation = useNavigation();
   const {colors} = useTheme();
   const screenProps = props as UseThemeType;
@@ -38,9 +39,11 @@ function AppScreen<T>(props: Props<T>) {
     padding: heightPixel(window.offset),
     paddingBottom: layout.menu === 'bottom' ? heightPixel(bottomTabHeight) : heightPixel(20),
     flex: 1,
-    backgroundColor: colors.screenBgColor,
+    backgroundColor: !backgroundImage && colors.screenBgColor,
     ...customStyle,
   };
+
+  const Container = backgroundImage ? ImageBackground : Block;
 
   return (
     <>
@@ -48,94 +51,108 @@ function AppScreen<T>(props: Props<T>) {
       {loading ? (
         <Text>loading</Text>
       ) : (
-        <>
-          {scroll && safe && !keyboardScroll && (
-            <ScrollView style={{...screenCommonStyles, ...getStyleShortcuts(screenProps)}} showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false}>
-              <Pressable
-                onPress={() => Keyboard.dismiss()}
+        <Container source={backgroundImage} resizeMode={'cover'} style={{flex: 1, justifyContent: 'center'}}>
+          <>
+            {scroll && safe && !keyboardScroll && (
+              <ScrollView style={{...screenCommonStyles, ...getStyleShortcuts(screenProps)}} showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false}>
+                <Pressable
+                  onPress={() => Keyboard.dismiss()}
+                  style={[
+                    {
+                      paddingBottom: layout.menu === 'bottom' ? bottomTabHeight + 20 : 50,
+                    },
+                  ]}>
+                  <SafeAreaView>{children}</SafeAreaView>
+                </Pressable>
+              </ScrollView>
+            )}
+            {scroll && !safe && (
+              <ScrollView style={{...screenCommonStyles, ...getStyleShortcuts(screenProps)}} showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false}>
+                <Pressable
+                  style={{
+                    minHeight: '100%',
+                  }}
+                  onPress={() => Keyboard.dismiss()}>
+                  <View
+                    style={[
+                      {
+                        paddingBottom: layout.menu === 'bottom' ? bottomTabHeight + 20 : 50,
+                      },
+                    ]}>
+                    {children}
+                  </View>
+                </Pressable>
+              </ScrollView>
+            )}
+            {!scroll && safe && !keyboardScroll && (
+              <SafeAreaView
                 style={[
                   {
-                    paddingBottom: layout.menu === 'bottom' ? bottomTabHeight + 20 : 50,
+                    ...screenCommonStyles,
                   },
+                  {...getStyleShortcuts(screenProps)},
                 ]}>
+                <Pressable style={{flex: 1}} onPress={() => Keyboard.dismiss()}>
+                  {children}
+                </Pressable>
+              </SafeAreaView>
+            )}
+            {keyboardScroll && !safe && (
+              <KeyboardAwareScrollView
+                style={{...screenCommonStyles, ...getStyleShortcuts(screenProps)}}
+                showsVerticalScrollIndicator={false}
+                showsHorizontalScrollIndicator={false}
+                scrollEnabled={scroll}
+                contentContainerStyle={{...getStyleShortcuts(screenProps)}}>
+                <Pressable
+                  style={{
+                    minHeight: '100%',
+                  }}
+                  onPress={() => Keyboard.dismiss()}>
+                  <View
+                    style={[
+                      {
+                        paddingBottom: layout.menu === 'bottom' ? bottomTabHeight + 20 : 50,
+                      },
+                      getStyleShortcuts(screenProps),
+                    ]}>
+                    {children}
+                  </View>
+                </Pressable>
+              </KeyboardAwareScrollView>
+            )}
+            {keyboardScroll && safe && (
+              <KeyboardAwareScrollView
+                style={[
+                  {
+                    ...screenCommonStyles,
+                  },
+                  {...getStyleShortcuts(screenProps)},
+                ]}
+                showsVerticalScrollIndicator={false}
+                showsHorizontalScrollIndicator={false}
+                contentContainerStyle={{
+                  flex: 1,
+                }}
+                scrollEnabled={scroll}>
                 <SafeAreaView>{children}</SafeAreaView>
-              </Pressable>
-            </ScrollView>
-          )}
-          {scroll && !safe && (
-            <ScrollView style={{...screenCommonStyles, ...getStyleShortcuts(screenProps)}} showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false}>
-              <Pressable
-                style={{
-                  minHeight: '100%',
-                }}
-                onPress={() => Keyboard.dismiss()}>
+              </KeyboardAwareScrollView>
+            )}
+            {!scroll && !safe && !keyboardScroll && !flatList && (
+              <Block pressable flex onPress={() => Keyboard.dismiss()}>
                 <View
                   style={[
                     {
-                      paddingBottom: layout.menu === 'bottom' ? bottomTabHeight + 20 : 50,
+                      ...screenCommonStyles,
+                      flex: 1,
                     },
+                    {...getStyleShortcuts(screenProps)},
                   ]}>
                   {children}
                 </View>
-              </Pressable>
-            </ScrollView>
-          )}
-          {!scroll && safe && !keyboardScroll && (
-            <SafeAreaView
-              style={[
-                {
-                  ...screenCommonStyles,
-                },
-                {...getStyleShortcuts(screenProps)},
-              ]}>
-              <Pressable style={{flex: 1}} onPress={() => Keyboard.dismiss()}>
-                {children}
-              </Pressable>
-            </SafeAreaView>
-          )}
-          {keyboardScroll && !safe && (
-            <KeyboardAwareScrollView
-              style={{...screenCommonStyles, ...getStyleShortcuts(screenProps)}}
-              showsVerticalScrollIndicator={false}
-              showsHorizontalScrollIndicator={false}
-              scrollEnabled={scroll}
-              contentContainerStyle={{...getStyleShortcuts(screenProps)}}>
-              <Pressable
-                style={{
-                  minHeight: '100%',
-                }}
-                onPress={() => Keyboard.dismiss()}>
-                <View
-                  style={[
-                    {
-                      paddingBottom: layout.menu === 'bottom' ? bottomTabHeight + 20 : 50,
-                    },
-                    getStyleShortcuts(screenProps),
-                  ]}>
-                  {children}
-                </View>
-              </Pressable>
-            </KeyboardAwareScrollView>
-          )}
-          {keyboardScroll && safe && (
-            <KeyboardAwareScrollView
-              style={[
-                {
-                  ...screenCommonStyles,
-                },
-                {...getStyleShortcuts(screenProps)},
-              ]}
-              showsVerticalScrollIndicator={false}
-              showsHorizontalScrollIndicator={false}
-              contentContainerStyle={{
-                flex: 1,
-              }}
-              scrollEnabled={scroll}>
-              <SafeAreaView>{children}</SafeAreaView>
-            </KeyboardAwareScrollView>
-          )}
-          {!scroll && !safe && !keyboardScroll && !flatList && (
-            <Block pressable style={{flex: 1}} onPress={() => Keyboard.dismiss()}>
+              </Block>
+            )}
+            {flatList && (
               <View
                 style={[
                   {
@@ -146,21 +163,9 @@ function AppScreen<T>(props: Props<T>) {
                 ]}>
                 {children}
               </View>
-            </Block>
-          )}
-          {flatList && (
-            <View
-              style={[
-                {
-                  ...screenCommonStyles,
-                  flex: 1,
-                },
-                {...getStyleShortcuts(screenProps)},
-              ]}>
-              {children}
-            </View>
-          )}
-        </>
+            )}
+          </>
+        </Container>
       )}
     </>
   );

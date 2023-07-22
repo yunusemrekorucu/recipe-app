@@ -12,8 +12,8 @@ export const themeColors = {
     //#endregion
 
     bottomTabColor: '#fff',
-    tabItem: '#212121',
-    tabItemFocused: '#fac422',
+    tabItem: '#C1C1C1',
+    tabItemFocused: '#E23E3E',
     defaultTextColor: 'black',
     inputBg: '#fff',
     inputText: '#000',

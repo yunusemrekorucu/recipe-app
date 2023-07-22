@@ -51,8 +51,9 @@ export interface IStyleShortcuts {
   'mr-auto'?: StyleProp<ViewStyle>;
   'ml-auto'?: StyleProp<ViewStyle>;
   'm-auto'?: StyleProp<ViewStyle>;
-  'h-full'?: boolean;
-  'text-center'?: boolean;
+  'h-full'?: StyleProp<ViewStyle> | boolean;
+  'w-full'?: StyleProp<ViewStyle> | boolean;
+  'text-center'?: StyleProp<ViewStyle> | boolean;
   w?: number | string;
   h?: number | string;
   mx?: number;
