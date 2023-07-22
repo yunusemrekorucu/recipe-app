@@ -111,6 +111,12 @@ const getStyles = (t: 'light' | 'dark') => {
       'text-center': {
         textAlign: 'center',
       },
+      'w-full': {
+        minWidth: '100%',
+      },
+      'h-full': {
+        minHeight: '100%',
+      },
     },
   };
   return styles;

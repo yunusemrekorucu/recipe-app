@@ -22,7 +22,7 @@ const SplashScreen = () => {
 
   useEffect(() => {
     setTimeout(() => {
-      const navigationName = Routes.AUTHENTICATION_ROOT;
+      const navigationName = Routes.WELCOME_SCREEN;
       navigation.replace(navigationName);
     }, 2000);
   }, []);

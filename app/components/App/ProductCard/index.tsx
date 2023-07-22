@@ -7,10 +7,10 @@ import {COLORS} from '@/theme';
 import {ICONS} from '@/utils';
 
 const ProductCard = () => {
-  const FavoriteBox = useStyledTag(Block, 'row center bg-white middle w-32 h-32  rounded-50');
-  const CardContainer = useStyledTag(Block, 'w-150 rounded-10', () => ({
+  const CardContainer = useStyledTag(Block, 'w-150 rounded-10 mr-16', () => ({
     height: 323,
   }));
+  const FavoriteBox = useStyledTag(Block, 'row center bg-white middle w-32 h-32  rounded-50');
   return (
     <CardContainer pressable>
       <Block style={{zIndex: 1}}>

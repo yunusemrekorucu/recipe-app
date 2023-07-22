@@ -40,6 +40,7 @@
     "@react-navigation/stack": "^6.3.16",
     "@reduxjs/toolkit": "^1.9.5",
     "@types/lodash": "^4.14.195",
+    "axios": "^1.4.0",
     "i18next": "^22.5.1",
     "lodash": "^4.17.21",
     "lottie-react-native": "^5.1.6",

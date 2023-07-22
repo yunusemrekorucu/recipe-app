@@ -39,7 +39,7 @@ const HomeScreen = () => {
           Popular category
         </Text>
         <CategoryBadges mt-12 data={PopulerCategoryData} />
-        <AppFlatList data={[3]} nestedScrollEnabled horizontal scrollEnabled renderItem={() => <ProductCard />} />
+        <AppFlatList data={[1, 2, 3, 4, 5, 6]} nestedScrollEnabled horizontal scrollEnabled renderItem={() => <ProductCard />} />
       </PopulerCategoryContent>
     </AppScreen>
   );

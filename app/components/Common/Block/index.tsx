@@ -1,5 +1,9 @@
 import React, {FC, memo, ReactElement, ReactNode} from 'react';
-import {Pressable, StyleProp, View, ViewStyle} from 'react-native';
+import {ImageBackground, Pressable, StyleProp, StyleSheet, View, ViewStyle} from 'react-native';
+
+import {createImageProgress} from 'react-native-image-progress';
+
+import style from '../AppInput/style';
 
 import {useTheme} from '@/hooks';
 import {IStyleShortcuts, setupSizeTypes, UseThemeType} from '@/utils';
@@ -12,10 +16,13 @@ interface Props extends SetupSizeTypes, IStyleShortcuts {
   pressable?: boolean;
   style?: StyleProp<ViewStyle> | ViewStyle;
   onPress?: () => void;
+  backgroundImage?: string;
 }
 
-const Block: FC<Props> = ({children, If, ...props}) => {
+const Block: FC<Props> = ({children, If, backgroundImage, ...props}) => {
   const {styles} = useTheme(props as UseThemeType);
+  const Image = createImageProgress(ImageBackground);
+  const source = '';
 
   if (If === false) {
     return <></>;
@@ -28,7 +35,22 @@ const Block: FC<Props> = ({children, If, ...props}) => {
       </Pressable>
     );
   }
-  return <View style={[styles, props.style]}>{children}</View>;
+
+  return (
+    <>
+      {backgroundImage ? (
+        <Image source={typeof source === 'string' ? {uri: source} : source} resizeMode={'cover'} style={[styles.imageContainer]} imageStyle={style}>
+          <View style={[styles, props.style]}>{children}</View>
+        </Image>
+      ) : (
+        <View style={[styles, props.style]}>{children}</View>
+      )}
+    </>
+  );
 };
+
+const styles = StyleSheet.create({
+  imageContainer: {flex: 1, width: '100%', height: '100%'},
+});
 
 export default memo(Block);

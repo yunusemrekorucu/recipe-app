@@ -4,7 +4,7 @@ export class ToastParams {
   type: ToastType = ToastType.success;
   title = '';
   message = '';
-  duration?: number = 5000;
+  duration?: number = 3000;
 }
 
 export class Coordinates {

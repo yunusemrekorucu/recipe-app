@@ -4,6 +4,7 @@ import Routes from '../../Routes';
 import AuthenticationStack from '../AuthStack';
 
 import {SplashScreen} from '@/screens';
+import WelcomePage from '@/screens/WelcomePage';
 import {IScreen} from '@/utils';
 
 const Screens = [
@@ -11,6 +12,12 @@ const Screens = [
     title: 'Splash Screen',
     name: Routes.SPLASH_SCREEN,
     component: SplashScreen,
+    headerShown: false,
+  },
+  {
+    title: 'Welcome Screen',
+    name: Routes.WELCOME_SCREEN,
+    component: WelcomePage,
     headerShown: false,
   },
   {
