@@ -10,8 +10,9 @@ export type HomeScreen = {
 
 export type AuthenticationStackNavigationProps = {
   [Routes.LOGIN_SCREEN]: undefined;
+  [Routes.REGISTER_SCREEN]: undefined;
 };
 
-export type AuthenticationStackNavigationPropsNavigationPropsType = StackNavigationProp<AuthenticationStackNavigationProps>;
+export type AuthenticationStackNavigationPropsType = StackNavigationProp<AuthenticationStackNavigationProps>;
 
 export type AuthenticationStackNavigationRouteType<TPageName extends Keyof<AuthenticationStackNavigationProps>> = RouteProp<HomeStackNavigationProps, TPageName>;

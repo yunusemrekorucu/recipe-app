@@ -8,7 +8,7 @@ export type BottomTabStackNavigationProps = {
   [Routes.HOME_ROOT]: {
     name: string;
   };
-  [Routes.FETCH_DATA_SCREEN]: undefined;
+  [Routes.PROFILE_ROOT]: undefined;
 };
 
 export type BottomTabStackNavigationPropsType = StackNavigationProp<BottomTabStackNavigationProps>;

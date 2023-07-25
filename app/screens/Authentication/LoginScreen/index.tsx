@@ -3,21 +3,25 @@ import {TouchableOpacity} from 'react-native';
 
 import {yupResolver} from '@hookform/resolvers/yup';
 import {useNavigation} from '@react-navigation/native';
-import {useForm} from 'react-hook-form';
+import {Controller, useForm} from 'react-hook-form';
 import * as Yup from 'yup';
 
 import {usePostAuthLoginMutation} from '@/api/recipe-api';
-import {AppButton, AppScreen, Block, fields, Form, Text} from '@/components';
+import {AppButton, AppCheckbox, AppInput, AppScreen, Block, fields, Text} from '@/components';
+import {useStyledTag} from '@/hooks';
 import {RootStackNavigationPropsType} from '@/navigation';
-import {showToast, ToastType} from '@/utils';
+import {AuthenticationStackNavigationPropsType} from '@/navigation/stacks/AuthStack/types';
+import {COLORS} from '@/theme';
+import {ICONS, showToast, ToastType} from '@/utils';
 
 const LoginScreen = () => {
-  const navigation = useNavigation<RootStackNavigationPropsType>();
+  const rootNavigation = useNavigation<RootStackNavigationPropsType>();
+  const navigation = useNavigation<AuthenticationStackNavigationPropsType>();
   const [loginRequest, {isLoading}] = usePostAuthLoginMutation();
 
   const initial = {
-    username: '',
-    password: null,
+    username: 'selmankorucu',
+    password: '12345678',
   };
 
   const schema = Yup.object({
@@ -33,7 +37,7 @@ const LoginScreen = () => {
   const onSubmit = async (values: {username: string; password: string}) => {
     const {error} = await loginRequest(values);
     if (!error) {
-      navigation.replace('MAIN_TABS_ROOT');
+      rootNavigation.replace('MAIN_TABS_ROOT');
     } else {
       showToast({
         type: ToastType.error,
@@ -43,21 +47,63 @@ const LoginScreen = () => {
     }
   };
 
+  const Divider = useStyledTag(Block, 'flex border h-1', () => ({
+    borderColor: COLORS.neutral30,
+  }));
+
   return (
-    <AppScreen p-0>
-      <Block flex p-20 middle>
-        <Form schema={schema} form={form} />
-        <AppButton mt-20 loading={isLoading} onPress={form.handleSubmit(onSubmit)} type="primary" title="Login" />
-        <Block center mt-8>
+    <AppScreen>
+      <Block mt-40>
+        <Text fs-24 bold>
+          Hi, Welcome Back! 👋
+        </Text>
+        <Text fs-12 light>
+          Hello again , you`ve been missed!
+        </Text>
+      </Block>
+      <Block flex p-2 mt-40>
+        <Block>
+          <Text medium fs-12 style={{marginBottom: -15}}>
+            Username
+          </Text>
+          <Controller
+            control={form?.control}
+            render={({field: {onChange, value}, fieldState: {error}}) => <AppInput form={form} onChangeText={onChange} placeholder={'admin'} error={error?.message} value={value} />}
+            name={'username'}
+          />
+        </Block>
+        <Block mt-10>
+          <Text medium fs-12 style={{marginBottom: -15}}>
+            Password
+          </Text>
+          <Controller
+            control={form?.control}
+            render={({field: {onChange, value}, fieldState: {error}}) => (
+              <AppInput form={form} iconRight={ICONS.plus} secureTextEntry={true} onChangeText={onChange} placeholder={'********'} error={error?.message} value={value} />
+            )}
+            name={'password'}
+          />
+        </Block>
+        <Block row justify-between mt-8>
+          <Block row center>
+            <AppCheckbox mr-6 onPress={() => {}} checked={true} />
+            <Text>Remember Me ?</Text>
+          </Block>
           <TouchableOpacity>
-            <Text>Forgot Password ?</Text>
+            <Text fs-12>Forgot Password ?</Text>
           </TouchableOpacity>
         </Block>
+        <AppButton mt-20 loading={isLoading} onPress={form.handleSubmit(onSubmit)} type="primary" title="Login" />
+        <Block row center mt-16>
+          <Divider />
+          <Text px-20>Or login with</Text>
+          <Divider />
+        </Block>
       </Block>
-      <Block absolute center bottom-20 style={{width: '100%'}}>
+      <Block absolute center bottom-20 mx-20 style={{width: '100%'}}>
         <Block row center>
           <Text>Don`t have an acount? </Text>
-          <TouchableOpacity style={{marginTop: -2}}>
+          <TouchableOpacity onPress={() => navigation.navigate('REGISTER_SCREEN')} style={{marginTop: -2}}>
             <Text semibold>Sign up</Text>
           </TouchableOpacity>
         </Block>

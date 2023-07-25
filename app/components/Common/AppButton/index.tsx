@@ -35,12 +35,13 @@ const AppButton = (props: AppButtonProps | never) => {
 
   const PrimaryButton = useStyledTag(Block, 'bg-primary center middle rounded-4');
   const SecondaryButton = useStyledTag(Block, 'bg-secondary border center middle rounded-4');
+  const OutlineButton = useStyledTag(Block, 'bg-transparent border  center middle rounded-4', () => ({borderColor: COLORS.primary}));
   const IconButton = useStyledTag(Block, 'center middle');
 
   const buttonElements = {
     primary: PrimaryButton,
     secondary: SecondaryButton,
-    outline: SecondaryButton,
+    outline: OutlineButton,
     icon: IconButton,
   };
 
@@ -65,7 +66,7 @@ const AppButton = (props: AppButtonProps | never) => {
         {!loading && (
           <Block row center>
             {title && (
-              <Text buttonTitleLight style={[styles.text, {color: titleColor, marginRight: icon && 8}]}>
+              <Text buttonTitleLight style={[styles.text, {color: type !== 'outline' ? titleColor : COLORS.primary, marginRight: icon && 8}]}>
                 {title}
               </Text>
             )}

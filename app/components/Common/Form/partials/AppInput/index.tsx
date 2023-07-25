@@ -3,7 +3,7 @@ import {TextInputProps} from 'react-native';
 
 import {Controller, UseFormReturn} from 'react-hook-form';
 
-import {AppInput as Input} from '@/components';
+import {AppInput as Input, Text} from '@/components';
 import {ICONS} from '@/utils';
 
 interface AppInputProps extends TextInputProps {
